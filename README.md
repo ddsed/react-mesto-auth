@@ -12,4 +12,4 @@
 * _CSS:_ flex-box, grid-layout, адаптивная верстка, использование относительных величин, media queries, плавное открытие попапов посредством visibility;  
 * _GIT:_ работа с ветками, деплой, публикация на git-pages, стандарт “Conventional Commits”.  
 
-Реализацию проекта можно увидеть [тут](https://ddsed.github.io/mesto-react/) 
+Реализацию проекта можно увидеть [тут](https://ddsed.github.io/react-mesto-auth/) 
