@@ -60,6 +60,8 @@
 @import url(./blocks/popup/__submit-button/popup__submit-button.css);
 @import url(./blocks/popup/__submit-button/_type/popup__submit-button_type_confirm-delete.css);
 @import url(./blocks/popup/__submit-button/_type/popup__submit-button_type_avatar.css);
+@import url(./blocks/popup/__container/_type/popup__container_type_info-outcome.css);
+@import url(./blocks/popup/__info-text/popup__info-text.css);
 
 @import url(./blocks/form/form.css);
 @import url(./blocks/form/__title/form__title.css);

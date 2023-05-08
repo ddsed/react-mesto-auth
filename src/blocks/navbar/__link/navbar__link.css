@@ -6,6 +6,8 @@
     font-size: 18px;
     line-height: 22px;
     text-align: right;
+
+    padding-top: 6px;
 }
 
 .navbar__link:hover {

@@ -15,6 +15,7 @@ import Register from './Register';
 import Login from './Login';
 import ProtectedRoute from './ProtectedRoute';
 import NavBar from './NavBar';
+import InfoTooltip from './InfoTooltip';
 
 function App() {
 
@@ -33,6 +34,8 @@ function App() {
 	const [currentUser, setCurrentUser] = useState({ name: '', about: '', avatar: '' });
 	const [cards, setCards] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
+	const [isInfoTooltipOpen, setInfoTooltipOpen] = useState(false);
+	const [isSuccess, setSucces] = useState(false); 
 
 	// API изначальных данных юзера и карточек
 	useEffect(() => {
@@ -140,6 +143,7 @@ function App() {
 		setIsAddPlacePopupOpen(false)
 		setIsEditAvatarPopupOpen(false)
 		setIsImagePopupOpen(false)
+		setInfoTooltipOpen(false)
 	}
 
 	//Регистрация
@@ -149,10 +153,16 @@ function App() {
 		.then(({token}) => {
 			localStorage.setItem("jwt", token);
 			setToken(token);
+			setSucces(true);
 			navigate('/sign-in', { replace: true });
 		})
 		.catch((err) => {
 			console.error(err);
+			setSucces(false);
+		})
+		.finally(() => {
+			setIsLoading(false);
+			setInfoTooltipOpen(true);
 		});
 	}
 
@@ -163,22 +173,20 @@ function App() {
 
 	useEffect(() => {
 		if (!token) {
-			//setIsLoading(false);
+			setIsLoading(false);
 			return;
 		}
 	
 		apiAuth.checkToken(token)
 		.then((user) => {
-			setUserData(user);
-			setIsLoggedIn(true);
-			navigate('/');
+		  setUserData(user);
+		  setIsLoggedIn(true);
+		  navigate('/');
 		})
 		.catch((err) => {
 			console.error(err);
 		})
-		.finally(() => {
-			setIsLoading(false);
-		});
+		.finally(() => setIsLoading(false));
 	}, [token]);
 
 	//Логин
@@ -191,7 +199,10 @@ function App() {
 		})
 		.catch((err) => {
 			console.error(err);
-		});
+			setSucces(false);
+			setInfoTooltipOpen(true);
+		})
+		.finally(() => setIsLoading(false));
 	}
 
 	//Выход
@@ -220,7 +231,7 @@ function App() {
 					/>
 				</Header>
 				<Routes>
-				<Route path="*" element={isLoggedIn ? <Navigate to="/" replace /> : <Navigate to="/sign-in" replace />} />
+					<Route path="*" element={isLoggedIn ? <Navigate to="/" /> : <Navigate to="/sign-in" />} />
 					<Route path='/' element={<ProtectedRoute element={Main}
 					cards={cards}
 					onEditProfile={handleEditProfileClick}
@@ -253,13 +264,12 @@ function App() {
 				onClose={closeAllPopups}
 				/>
 
-				{/*<div className="popup popup_type_delete">
-					<div className="popup__container">
-						<button className="popup__close-button button" type="button"></button>
-						<h2 className="popup__title popup__title_type_delete">Вы уверены?</h2>
-						<button className="popup__submit-button popup__submit-button_type_confirm-delete" type="submit">Да</button>
-					</div>
-				</div>*/}
+				{/*Попап успеха/ошибки регистрации и логина*/}
+				<InfoTooltip
+				name={'info-outcome'}
+				isOpen={isInfoTooltipOpen}
+				onClose={closeAllPopups}
+				isSuccess={isSuccess} />
 			</div>
 		</CurrentUserContext.Provider>
   );
