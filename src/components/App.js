@@ -39,6 +39,9 @@ function App() {
 
 	// API изначальных данных юзера и карточек
 	useEffect(() => {
+		if(!isLoggedIn) {
+			return undefined;
+		} else {
         api.getUserInfoApi()
         .then((user) => {
 			setCurrentUser(user)
@@ -54,7 +57,8 @@ function App() {
         .catch((err) => {
             console.log(err);
         });
-	}, []);
+	}
+	}, [isLoggedIn]);
 
 	//Лайк карточек
 	function handleCardLike(card) {
@@ -167,27 +171,35 @@ function App() {
 	}
 
 	useEffect(() => {
-		const jwt = localStorage.getItem("jwt");
-		setToken(jwt);
-	}, []);
-
-	useEffect(() => {
 		if (!token) {
 			setIsLoading(false);
 			return;
 		}
+	}, [token])
+
+	useEffect(() => {
+		tokenCheck();
+	}, [])
 	
-		apiAuth.checkToken(token)
-		.then((user) => {
-		  setUserData(user);
-		  setIsLoggedIn(true);
-		  navigate('/');
-		})
-		.catch((err) => {
-			console.error(err);
-		})
-		.finally(() => setIsLoading(false));
-	}, [token]);
+	const tokenCheck = () => {
+		if (localStorage.getItem("jwt")) {
+			const jwt = localStorage.getItem("jwt");
+			if (jwt) {
+				apiAuth.checkToken(jwt)
+				.then((user) => {
+					setUserData(user);
+					setIsLoggedIn(true);
+					navigate('/');
+				})
+				.catch((err) => {
+					console.error(err);
+				})
+				.finally(() => {
+					setIsLoading(false);
+				});
+			} 
+		}
+	}
 
 	//Логин
 	function loginUser({ email, password }) {
@@ -195,14 +207,16 @@ function App() {
 		.login(email, password)
 		.then(({token}) => {
 			localStorage.setItem("jwt", token);
-			setToken(token);
+			tokenCheck();
 		})
 		.catch((err) => {
 			console.error(err);
 			setSucces(false);
 			setInfoTooltipOpen(true);
 		})
-		.finally(() => setIsLoading(false));
+		.finally(() => {
+			setIsLoading(false);
+		});
 	}
 
 	//Выход
@@ -216,7 +230,7 @@ function App() {
 	}
 
 	//Загрузка данных
-	if(isLoading) {
+	if (isLoading) {
 		return null;
 	}
 
