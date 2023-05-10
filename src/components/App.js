@@ -178,10 +178,6 @@ function App() {
 	}, [token])
 
 	useEffect(() => {
-		tokenCheck();
-	}, [])
-	
-	const tokenCheck = () => {
 		if (localStorage.getItem("jwt")) {
 			const jwt = localStorage.getItem("jwt");
 			if (jwt) {
@@ -199,16 +195,20 @@ function App() {
 				});
 			} 
 		}
-	}
+	}, []);
 
 	//Логин
 	function loginUser({ email, password }) {
 		apiAuth
 		.login(email, password)
-		.then(({token}) => {
-			localStorage.setItem("jwt", token);
-			tokenCheck();
-		})
+		.then((data) => {
+			if (data.token) {
+				setUserData(data.user);
+				setIsLoggedIn(true);
+				localStorage.setItem("jwt", data.token);
+				navigate("/");
+			}
+		  })
 		.catch((err) => {
 			console.error(err);
 			setSucces(false);
