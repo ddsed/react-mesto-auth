@@ -203,7 +203,7 @@ function App() {
 		.login(email, password)
 		.then((data) => {
 			if (data.token) {
-				setUserData(data.user);
+				setUserData(email);
 				setIsLoggedIn(true);
 				localStorage.setItem("jwt", data.token);
 				navigate("/");
