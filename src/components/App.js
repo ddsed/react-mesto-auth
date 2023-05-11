@@ -21,7 +21,7 @@ function App() {
 
 	const navigate = useNavigate();
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
-	const [userData, setUserData] = useState('');
+	const [userEmail, setUserEmail] = useState('');
 	const [token, setToken] = useState("");
 	const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
 	const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
@@ -174,7 +174,7 @@ function App() {
 			apiAuth.checkToken(token)
 			.then((res) => {
 				const data = res.data;
-				setUserData(data.email);
+				setUserEmail(data.email);
 				setIsLoggedIn(true);
 				navigate('/');
 			})
@@ -199,7 +199,7 @@ function App() {
 		.then(({token}) => {
 			localStorage.setItem("jwt", token);
 			setToken(token);
-			setUserData(email);
+			setUserEmail(email);
 			setIsLoggedIn(true);
 			navigate ('/');
 		})
@@ -217,7 +217,7 @@ function App() {
 		localStorage.removeItem("jwt");
 		setIsLoggedIn(false);
 		setToken("");
-		setUserData('');
+		setUserEmail("");
 		navigate('/sign-in', { replace: true });
 	}
 
@@ -231,7 +231,7 @@ function App() {
 			<div className="page">
 				<Header>
 					<NavBar 
-					userData={userData}
+					userEmail={userEmail}
 					loggedOut={logOut}
 					loggedIn={isLoggedIn}
 					/>

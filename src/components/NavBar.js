@@ -1,12 +1,12 @@
 import { NavLink, Route, Routes } from 'react-router-dom';
 
-function NavBar({ userData, loggedIn, loggedOut }) {
+function NavBar({ userEmail, loggedIn, loggedOut }) {
   return(
     <nav className="navbar">
         {
             loggedIn ?
             <>
-                <p className="navbar__email">{userData}</p>
+                <p className="navbar__email">{userEmail}</p>
                 <button type="button" className="navbar__button" onClick={loggedOut}>Выйти</button>
             </> 
             :
