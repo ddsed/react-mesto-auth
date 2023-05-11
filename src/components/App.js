@@ -21,10 +21,7 @@ function App() {
 
 	const navigate = useNavigate();
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
-	const [userData, setUserData] = useState({
-		_id: "",
-		email: ""
-	});
+	const [userData, setUserData] = useState('');
 	const [token, setToken] = useState("");
 	const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
 	const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
@@ -150,6 +147,7 @@ function App() {
 		setInfoTooltipOpen(false)
 	}
 
+	
 	//Регистрация
 	function registerUser({ email, password }) {
 		apiAuth
@@ -171,52 +169,46 @@ function App() {
 	}
 
 	useEffect(() => {
+		if(localStorage.getItem("jwt")) {
+			const token = localStorage.getItem("jwt");
+			apiAuth.checkToken(token)
+			.then((res) => {
+				const data = res.data;
+				setUserData(data.email);
+				setIsLoggedIn(true);
+				navigate('/');
+			})
+			.catch((err) => {
+				console.error(err);
+			})
+			.finally(() => setIsLoading(false));
+		}
+	}, []);
+
+	useEffect(() => {
 		if (!token) {
 			setIsLoading(false);
 			return;
 		}
-	}, [token])
-
-	useEffect(() => {
-		if (localStorage.getItem("jwt")) {
-			const jwt = localStorage.getItem("jwt");
-			if (jwt) {
-				apiAuth.checkToken(jwt)
-				.then((user) => {
-					setUserData(user);
-					setIsLoggedIn(true);
-					navigate('/');
-				})
-				.catch((err) => {
-					console.error(err);
-				})
-				.finally(() => {
-					setIsLoading(false);
-				});
-			} 
-		}
-	}, []);
+	}, [token]);
 
 	//Логин
 	function loginUser({ email, password }) {
 		apiAuth
 		.login(email, password)
-		.then((data) => {
-			if (data.token) {
-				setUserData(email);
-				setIsLoggedIn(true);
-				localStorage.setItem("jwt", data.token);
-				navigate("/");
-			}
-		  })
+		.then(({token}) => {
+			localStorage.setItem("jwt", token);
+			setToken(token);
+			setUserData(email);
+			setIsLoggedIn(true);
+			navigate ('/');
+		})
 		.catch((err) => {
 			console.error(err);
 			setSucces(false);
 			setInfoTooltipOpen(true);
 		})
-		.finally(() => {
-			setIsLoading(false);
-		});
+		.finally(() => setIsLoading(false));
 	}
 
 	//Выход
@@ -225,12 +217,12 @@ function App() {
 		localStorage.removeItem("jwt");
 		setIsLoggedIn(false);
 		setToken("");
-		setUserData({ _id: "", email: "" });
+		setUserData('');
 		navigate('/sign-in', { replace: true });
 	}
 
 	//Загрузка данных
-	if (isLoading) {
+	if(isLoading) {
 		return null;
 	}
 

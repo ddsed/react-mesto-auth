@@ -6,7 +6,7 @@ function NavBar({ userData, loggedIn, loggedOut }) {
         {
             loggedIn ?
             <>
-                <p className="navbar__email">{userData.data.email}</p>
+                <p className="navbar__email">{userData}</p>
                 <button type="button" className="navbar__button" onClick={loggedOut}>Выйти</button>
             </> 
             :
