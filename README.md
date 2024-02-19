@@ -1,15 +1,13 @@
-# Учебный проект: Mesto-React-Auth  
+# Study project: Mesto-React-Auth  
   
-Здесь будет проект сервиса Mesto: интерактивной страницы, куда можно добавлять фотографии, удалять их и ставить лайки.  
+It is a repository for Mesto: interactive page, where you can add, delte and like cards with photos.    
   
-Выполнена верстка сайта, а также написана логика с использованием React.  
+Tech stack and tools:  
   
-Изученные и использованные технологии:  
-  
-* _REACT:_ cинтаксис JSX, функциональные и классовые компоненты, создание, настройка и дебаггинг проекта, хуки, привязка контекста, настройка регистрации и аутентификации пользователя;
-* _JS:_ webpack и организация кода соответственно стандарту ООП, работа с API и запросами на сервер;
-* _HTML:_ методология БЭМ, идентификаторы, псевдоклассы, верстка форм;  
-* _CSS:_ flex-box, grid-layout, адаптивная верстка, использование относительных величин, media queries, плавное открытие попапов посредством visibility;  
-* _GIT:_ работа с ветками, деплой, публикация на git-pages, стандарт “Conventional Commits”.  
+* _REACT:_ JSX, function and class components, hooks, context, user authorisation and registration;
+* _JS:_ webpack, object-oriented programming, API;
+* _HTML:_ pseudo-classes, forms;  
+* _CSS:_ flex-box, grid-layout, adaptive layout, media queries, animation;  
+* _GIT:_ branches, deploy on git-pages, “Conventional Commits”.  
 
-Реализацию проекта можно увидеть [тут](https://ddsed.github.io/react-mesto-auth/) 
+[Deploy link](https://ddsed.github.io/react-mesto-auth/) 
